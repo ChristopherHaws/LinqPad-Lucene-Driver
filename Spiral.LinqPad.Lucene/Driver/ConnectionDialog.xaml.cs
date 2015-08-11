@@ -36,7 +36,8 @@ namespace Spiral.LinqPad.Lucene.Driver
 
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-				this.connectionInfo.DisplayName = new DirectoryInfo(dialog.SelectedPath).Name;
+				this.driverData.IndexDirectory = dialog.SelectedPath;
+                this.connectionInfo.DisplayName = new DirectoryInfo(dialog.SelectedPath).Name;
 			}
 		}
 	}

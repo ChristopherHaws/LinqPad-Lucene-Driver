@@ -1,7 +1,9 @@
 using System;
+using System.Xml.Serialization;
 
 namespace Spiral.LinqPad.Lucene.Driver
 {
+	[XmlRoot("DriverData")]
 	public class LuceneDriverData
 	{
 		public String IndexDirectory { get; set; }

@@ -1,7 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using LINQPad.Extensibility.DataContext;
+using Lucene.Net.Analysis.Standard;
+using Lucene.Net.Index;
+using Lucene.Net.Search;
+using Lucene.Net.Store;
 using Spiral.LinqPad.Lucene.Extentions;
 
 namespace Spiral.LinqPad.Lucene.Driver
@@ -12,9 +18,9 @@ namespace Spiral.LinqPad.Lucene.Driver
 	/// </summary>
 	public class LuceneIndexDriver : StaticDataContextDriver
 	{
-		public override string Name { get { return "Lucene Driver"; } }
+		public override string Name => "Lucene Driver";
 
-		public override string Author { get { return "Christopher Haws"; } }
+		public override string Author => "Christopher Haws";
 
 		public override string GetConnectionDescription(IConnectionInfo connectionInfo)
 		{
@@ -35,20 +41,28 @@ namespace Spiral.LinqPad.Lucene.Driver
 
 		public override List<ExplorerItem> GetSchema(IConnectionInfo connectionInfo, Type customType)
 		{
-			var directory = connectionInfo.DriverData.FromXElement<LuceneDriverData>().IndexDirectory;
+            var indexDirectory = connectionInfo.DriverData.FromXElement<LuceneDriverData>().IndexDirectory;
 
-			//TODO: Get all of the field in the index
 			//TODO: Fields with configured delimiters should show up as a tree
 			//TODO: Show Numeric and String fields with their types
 			//TODO: If the directory selected contains sub-directories, maybe we should show them all...
-			return new List<ExplorerItem>
+
+			using (var directory = FSDirectory.Open(new DirectoryInfo(indexDirectory)))
+			using (var indexReader = IndexReader.Open(directory, true))
 			{
-				new ExplorerItem("FooField", ExplorerItemKind.QueryableObject, ExplorerIcon.Column)
-				{
-					IsEnumerable = false,		//TODO: Should be true when its a multi-field
-					ToolTipText = "Cool tip"
-				}
-			};
+				return indexReader
+					.GetFieldNames(IndexReader.FieldOption.ALL)
+					.Select(fieldName =>
+					{
+						//var field = //TODO: Get the first document with this field and get its types.
+                        return new ExplorerItem(fieldName, ExplorerItemKind.QueryableObject, ExplorerIcon.Column)
+						{
+							IsEnumerable = false,       //TODO: Should be true when its a multi-field
+							ToolTipText = "Cool tip"
+						};
+					})
+					.ToList();
+			}
 		}
 	}
 }
