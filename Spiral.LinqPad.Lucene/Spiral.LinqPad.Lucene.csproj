@@ -68,7 +68,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Driver\UniversalStaticDriver.cs" />
+    <Compile Include="Driver\LuceneDriverData.cs" />
+    <Compile Include="Driver\LuceneIndexDriver.cs" />
     <Page Include="Driver\ConnectionDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -79,6 +80,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extentions\XElementExtentions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

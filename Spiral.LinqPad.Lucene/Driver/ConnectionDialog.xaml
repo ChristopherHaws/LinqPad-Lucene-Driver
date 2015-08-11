@@ -15,7 +15,7 @@
             <Label Padding="0,0,0,1">Path to index directory:</Label>
         </DockPanel>
 
-        <TextBox Name="txtAssemblyPath" Margin="0,0,0,6" Text="{Binding CustomTypeInfo.CustomAssemblyPath}"/>
+        <TextBox Name="txtAssemblyPath" Margin="0,0,0,6" Text="{Binding IndexDirectory}"/>
 
         <CheckBox IsChecked="{Binding ReadOnlyMode}">Open in Read-Only mode</CheckBox>
         <CheckBox IsChecked="{Binding ForceUnlock}">Force unlock, if locked</CheckBox>
